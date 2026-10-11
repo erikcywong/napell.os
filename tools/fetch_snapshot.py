@@ -20,12 +20,21 @@ SKILL = os.environ.get("LIBRARY_SKILL_DIR") or (
     "C:/Users/wangx/AppData/Local/Programs/WorkBuddy/resources/app.asar.unpacked/"
     "resources/plugins/workbuddy-builtin/skills/library"
 )
-STATE_PATH = os.environ.get("STATE") or next(
-    (p for p in [os.path.join(ROOT, "_build", "state.json"),
-                 os.path.join(os.path.dirname(ROOT), "_build", "state.json")]
-     if os.path.isfile(p)),
-    None,
-)
+def _find_state():
+    """先在仓库内找，再向上最多 4 层找 _build/state.json（仓库嵌在工作区里时也能定位）。"""
+    base = ROOT
+    for _ in range(4):
+        cand = os.path.join(base, "_build", "state.json")
+        if os.path.isfile(cand):
+            return cand
+        parent = os.path.dirname(base)
+        if parent == base:
+            break
+        base = parent
+    return None
+
+
+STATE_PATH = os.environ.get("STATE") or _find_state()
 OUT = os.path.join(ROOT, "snapshot.json")
 KEYS = ["agents", "events", "tasks", "ledger", "cycles"]
 

@@ -4,30 +4,34 @@
 
 Interactive control plane for a 9-agent coffee supply-chain operating system: event bus, task dispatch, inter-agent settlement ledger, and a rolling 24-hour clock cycle.
 
+**每个业务板块一个独立页面**（不再是单页滚动长页）：9 个页面 + 共享 `assets/`，纯静态、无构建步骤、无外部依赖。
+
 ---
 
 ## Live
 
 | 形态 | 链接 | 说明 |
 |---|---|---|
-| 静态演示版（本仓库） | GitHub Pages | 内嵌真实数据快照，全部交互在浏览器本地生效 |
+| 静态演示版（本仓库） | https://erikcywong.github.io/napell.os/ | 内嵌真实数据快照，全部交互在浏览器本地生效 |
 | 在线协作版（WorkBuddy 资料库） | https://www.workbuddy.cn/space/d/znE2WbdN9A3HrogSzHliaR | 连真实数据库，写入会持久化到云端 |
 
-> 两者的页面代码同源。资料库版使用宿主注入的 `__SMART_PAGE__.database` SDK；本仓库版在检测不到该 SDK 时，自动注入一份浏览器内实现（同形契约），因此静态站点上依然是**可读可写**的，而不是一张截图。
+> 两者的**页面代码同源**（同一份 `assets/js/os.js`）。资料库版使用宿主注入的 `__SMART_PAGE__.database` SDK；本仓库版在检测不到该 SDK 时，自动加载一份浏览器内实现（同形契约），因此静态站点上依然是**可读可写**的，而不是一张截图。
 
----
+## Pages
 
-## What's in the cockpit
+| 页面 | 板块 | 能力 |
+|---|---|---|
+| `index.html` | 🧭 总览 | 4 张总览卡 + 17 张入口卡（8 个板块 + 9 个智能体）+ 环境配置表 |
+| `fleet.html` | 🤖 智能体舰队 | 9 个智能体的状态 / 能力数 / 调用量 / 信用积分 / 累计收益，心跳显示为「x 分钟前」 |
+| `dispatch.html` | 🎛️ 任务派发 | 下发工单 → 写入任务表并同步广播一条事件（含草稿本地缓存）+ 实时计量报价 |
+| `bus.html` | 📡 事件总线 | 全链事件流 + 按处理状态 / 来源智能体分布，30 秒自动刷新 |
+| `board.html` | 🗂️ 工单看板 | 工单看板，「标记完成」回执并补发事件，按执行智能体聚合统计 |
+| `cycles.html` | 🕒 24 小时时钟 | 24 根逐小时柱（生豆产出 / 碳减排 / 融资 / IP / 门店收入），可下钻单周期详情 |
+| `economy.html` | 💠 智能体经济体 | 收 / 支 / 净额 + 账本流水（分页）+ 结算类型分布 + **JEBI 计量引擎面板** |
+| `kpi.html` | 📊 运行 KPI | 聚合驱动的产业链 KPI 卡片与飞轮条 |
+| `sector.html?agent=<名>` | 🏭 板块运行视图 | **九个板块各自的独立页面**：档案 / 能力 / 工单 / 事件 / 结算流水 / 6 张统计卡，全部按该板块过滤 |
 
-| 板块 | 能力 |
-|---|---|
-| `#fleet` 智能体舱 | 9 个智能体的状态 / 能力数 / 调用量 / 信用积分 / 累计收益，心跳实时显示为「x 分钟前」 |
-| `#dispatch` 派发台 | 下发工单 → 写入任务表并同步广播一条事件到总线（含草稿本地缓存） |
-| `#bus` 事件总线 | 12 类链上事件流 + 按处理状态 / 来源智能体分布，30 秒自动刷新 |
-| `#board` 任务工单 | 工单看板，「标记完成」回执并补发事件，按执行智能体聚合统计 |
-| `#economy` 经济体 | 收 / 支 / 净额 + 账本流水（分页）+ 结算类型分布 + **JEBI 计量引擎面板** |
-| `#cycles` 24 小时时钟 | 24 根逐小时柱（生豆产出 / 碳减排 / 融资 / IP / 门店收入），可下钻单周期详情 |
-| `#kpi` 飞轮 KPI | 聚合驱动的产业链 KPI 卡片与飞轮条 |
+`fleet` 页点任意智能体卡、或导航「业务板块」下拉里的任意条目，都会进入 `sector.html?agent=…`。
 
 ## Metering engine (JEBI fusion)
 
@@ -81,29 +85,47 @@ A scheduled task advances the system once an hour: it appends
 `运行周期 ×1`, `事件总线 ×12`, `任务工单 ×2–3`, `账本 ×2–3`, and refreshes all 9 agent heartbeats —
 so the cockpit always reads live, growing data rather than a frozen snapshot.
 
+## Page scoping (how one shared script serves 9 pages)
+
+`assets/js/os.js` is one file shared by all pages. Each page declares its own scope with
+`<body data-page="fleet">`; the script then reads a `SCOPES` table mapping page → which queries to run and
+which aggregate groups to fetch. Everything not in scope is skipped (its `getElementById` misses are
+absorbed by a no-op sentinel element), so no page fetches data it doesn't render and no page errors on
+missing DOM. `sector.html?agent=<名>` reads the `agent` query parameter and filters tasks / events / ledger
+by that agent.
+
+The same `os.js` also runs the original single-file mode unchanged when `data-page` is absent.
+
 ## Static demo mode
 
-`index.html` is self-contained (no build step, no external requests). If `__SMART_PAGE__.database`
-is absent it installs an in-browser implementation of the same contract
-(`query` with cursor pagination, `aggregate` with `groupBy` + per-item `filter`, `addRecord`,
-`updateRecord`, `getSchema`) backed by an embedded snapshot, persisting writes to `localStorage`.
+On this repo, `assets/js/shim.js` installs an in-browser implementation of the same
+`__SMART_PAGE__.database` contract (`query` with cursor pagination, `aggregate` with `groupBy` +
+per-item `filter`, `addRecord`, `updateRecord`, `getSchema`) backed by `assets/js/snapshot.js`,
+persisting writes to `localStorage`. It yields to the real SDK whenever one is present.
 
 A bottom-left chip shows the snapshot timestamp and offers **重置数据** to restore the baseline.
 
 ## Rebuild
 
 ```bash
-# 1. refresh the snapshot from the live tables
+# 0. 前置：工作区里的 _build/agent-os.html 是多页构建的源文件
+#    （可用 PAGE_SRC=/abs/path/agent-os.html 覆盖；否则从仓库根向上最多 4 层查找）
+
+# 1. 从线上 5 张表刷新数据快照
 python tools/fetch_snapshot.py
 
-# 2. rebuild index.html
-python tools/build_gh.py
+# 2. 生成 9 个页面 + assets/（直接写入仓库根目录）
+python tools/build_site.py
+
+#    资料库版（不注入浏览器数据层，走宿主真实 SDK）：
+python tools/build_site.py --no-gh --out ../libsite
 ```
 
-`tools/build_gh.py` splices an embedded-snapshot data layer into the same single-file page used by
-the WorkBuddy library version, so the two stay in sync.
+`tools/build_site.py` 从同一份源页面拆出 CSS / 数据层 / 各板块 DOM，再套上统一外壳与导航；
+两个形态共用同一份 `os.js`，因此不会互相走偏。
 
 ## Stack
 
-Single-file HTML/CSS/ES5 JavaScript. No framework, no bundler, no dependencies.
+Multi-page static site. Shared `assets/css/style.css` + `assets/js/os.js`. Vanilla ES5
+JavaScript, no framework, no bundler, no external requests.
 Dark theme (`#000` background, `#1d9bf0` accent), dashboard-style data presentation.
