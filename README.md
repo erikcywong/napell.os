@@ -25,9 +25,34 @@ Interactive control plane for a 9-agent coffee supply-chain operating system: ev
 | `#dispatch` 派发台 | 下发工单 → 写入任务表并同步广播一条事件到总线（含草稿本地缓存） |
 | `#bus` 事件总线 | 12 类链上事件流 + 按处理状态 / 来源智能体分布，30 秒自动刷新 |
 | `#board` 任务工单 | 工单看板，「标记完成」回执并补发事件，按执行智能体聚合统计 |
-| `#economy` 经济体 | 收 / 支 / 净额 + 账本流水（分页）+ 结算类型分布 |
+| `#economy` 经济体 | 收 / 支 / 净额 + 账本流水（分页）+ 结算类型分布 + **JEBI 计量引擎面板** |
 | `#cycles` 24 小时时钟 | 24 根逐小时柱（生豆产出 / 碳减排 / 融资 / IP / 门店收入），可下钻单周期详情 |
 | `#kpi` 飞轮 KPI | 聚合驱动的产业链 KPI 卡片与飞轮条 |
+
+## Metering engine (JEBI fusion)
+
+Following **meter first, price second** — same spec as [coffeeos.space](https://www.coffeeos.space/architecture.html):
+
+`计费JBP = ceil(max(计量成本 × 倍率, 下限))`, with `1 JBP = 0.1 CNY`.
+
+| 计价角色 | 倍率 | 下限 | Source |
+|---|---|---|---|
+| B端加盟商 | ×5 | 50 JBP (¥5) | JEBI, verbatim |
+| C端订阅 | ×0 | — | JEBI — cost sits inside the subscription |
+| C端即用即付 | ×3 | 10 JBP (¥1) | JEBI, verbatim |
+| 平台内部 | ×1 | 0 | fusion extension — internal calls settle at cost |
+
+`智能体账本` carries `计量成本` (metered cost in CNY) / `计价角色` (pricing track) / `计费JBP` (charged points)
+alongside the pre-existing `金额` (service settlement value in CNY). Dispatching a task from the console
+meters it and writes one ledger entry, so the economy settles on every user action.
+
+> **Two 口径, deliberately:** `金额` is the service's business settlement value; `计费JBP × 0.1` is the
+> platform's per-call capability fee. JEBI charges **per call**, not a percentage of the transaction —
+> which is why the two don't track each other.
+
+The engine is implemented twice from one spec, and must stay in lockstep:
+`_meter/jebi_meter.py` (Python, batch/backfill) and the inline `ROLE_PRICING` / `quoteByCost` block in the page
+(browser, live quotes).
 
 ## Data model
 
@@ -38,7 +63,7 @@ Interactive control plane for a 9-agent coffee supply-chain operating system: ev
 | 智能体注册表 | `cFRjJqhyp5LDaCZHPp3XVm` | 9 | agent registry, heartbeat, credits |
 | 事件总线 | `ND8kO27PEOFohwZHxm6WgV` | 288 | inter-agent event log (12 topics/hour) |
 | 任务工单 | `xQspxv5gupTBY8LeSHVv5L` | 61 | task tickets + completion |
-| 智能体账本 | `dmRghisDSmokozzg8GMuwv` | 55 | service settlement ledger |
+| 智能体账本 | `dmRghisDSmokozzg8GMuwv` | 55 | service settlement ledger + **metering fields** |
 | 运行周期 | `HZm1EBKdHUmqRMNIasCJfm` | 24 | hourly clock cycles + yield/carbon/finance |
 
 Event topic vocabulary:
