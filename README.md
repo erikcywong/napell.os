@@ -129,3 +129,9 @@ python tools/build_site.py --no-gh --out ../libsite
 Multi-page static site. Shared `assets/css/style.css` + `assets/js/os.js`. Vanilla ES5
 JavaScript, no framework, no bundler, no external requests.
 Dark theme (`#000` background, `#1d9bf0` accent), dashboard-style data presentation.
+
+## 视觉方案预览 · "Institutional"（西方商业化模板）
+
+`/western/` 是同一套 9 页 + 同一份数据的**换肤预览**：纸面底色、墨色文字、深松绿 + 古铜双色、细 hairline 分隔、等宽小标签、直角几何。导航右上角可在纸面版 / 深色版之间切换（选择存在 localStorage）。样式完全独立于默认皮肤（`western/assets/css/western.css`），确认采用后可直接替换根目录 `assets/css/style.css`。
+
+重建：`python tools/build_western.py --src . --out western --gh`（源脚本在工作区 `_build/build_western.py`）。
