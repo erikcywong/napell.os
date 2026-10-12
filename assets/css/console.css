@@ -1,7 +1,8 @@
 /* ==========================================================================
-   Napell Coffee Chain OS · 运行控制台（总览版版面实验）
-   沿用原深色设计变量（style.css 的 --bg/--accent/--border/...），只重排版面：
-   常驻状态轨 + 12 栏面板矩阵；不做长文叙述。
+   Napell Coffee Chain OS · 控制台版面系统（总览 + 板块页共用）
+   沿用 style.css 的深色设计变量（--bg / --accent / --border / ...），只重排版面：
+     左侧常驻状态轨 + 页首仪表条 + 12 栏带编号面板
+   每块面板只读一张表，头部标明来源与条数，右上角进对应板块页。不做长文叙述。
    ========================================================================== */
 
 /* ---------- 骨架 ---------- */
@@ -55,7 +56,8 @@ body.ck{padding-top:var(--nav-h);background:var(--bg)}
   display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
   font-size:clamp(22px,2.5vw,30px);font-weight:800;letter-spacing:-.9px;line-height:1.15;
 }
-.ck-h1 span{font-size:14px;font-weight:700;color:var(--text-mute);letter-spacing:0}
+.ck-h1 span{font-size:14px;font-weight:700;color:var(--text-mute);letter-spacing:0;display:inline-flex;align-items:center;gap:7px}
+.ck-h1 .sec-live{font-size:11px;letter-spacing:.3px;margin-left:2px}
 .ck-sub{margin-top:9px;font-size:13px;color:var(--text-dim);line-height:1.6;max-width:900px}
 
 /* 页首仪表条 */
@@ -73,10 +75,12 @@ body.ck{padding-top:var(--nav-h);background:var(--bg)}
 .ck-panel{
   grid-column:span var(--span,6);
   display:flex;flex-direction:column;min-width:0;
-  background:var(--bg-card);border:1px solid var(--border);border-radius:14px;overflow:hidden;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:14px;overflow:clip;
   scroll-margin-top:calc(var(--nav-h) + 14px);transition:border-color .2s;
 }
 .ck-panel:hover{border-color:var(--border-strong)}
+/* 长表旁边的窄面板：随滚动保持可见（overflow:clip 不产生滚动容器，sticky 仍有效） */
+.ck-panel.ck-sticky .ck-body{position:sticky;top:calc(var(--nav-h) + 14px);align-self:flex-start}
 .ck-ph{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:11px 14px;background:var(--bg-elev);border-bottom:1px solid var(--border)}
 .ck-ph .n{font-family:ui-monospace,Menlo,monospace;font-size:10.5px;font-weight:800;color:var(--accent);letter-spacing:1.2px}
 .ck-ph h2{font-size:13.5px;font-weight:800;letter-spacing:-.2px}
@@ -86,9 +90,34 @@ body.ck{padding-top:var(--nav-h);background:var(--bg)}
   font-size:10.5px;font-weight:700;color:var(--text-dim);text-decoration:none;white-space:nowrap;transition:.15s;
 }
 .ck-ph .go:hover{color:var(--accent);border-color:var(--accent)}
-.ck-body{padding:12px 14px 14px;flex:1;min-width:0}
+.ck-body{padding:12px 14px 14px;flex:1;min-width:0;container-type:inline-size}
 
-/* 窄表格（密集行） */
+/* 板块页：把原页面块放进面板后，抹平「卡中卡」与多余外边距 */
+.ck-body > .card,
+.ck-body > .panel,
+.ck-body > .grid,
+.ck-body > .tw,
+.ck-body > .stats,
+.ck-body > .toolbar,
+.ck-body > .donut,
+.ck-body > .timeline{margin-top:0 !important}
+.ck-body > * + *{margin-top:14px !important}
+.ck-body > .toolbar{margin-bottom:14px !important}
+.ck-body > .card,
+.ck-body > .panel,
+.ck-body > .ck-flat{background:none !important;border:0 !important;border-radius:0 !important;padding:0 !important}
+.ck-body > .card:hover,
+.ck-body > .panel:hover{background:none !important;border:0 !important}
+.ck-body h3{font-size:12.5px;font-weight:800;letter-spacing:-.1px;color:var(--text-dim);margin:0 0 10px}
+.ck-body .panel-head{display:none}          /* 面板自带抬头，避免双层 header */
+.ck-body > .panel > .panel-body{padding:0}
+
+/* 面板内的说明文字（原 .lead 降级为一行注记） */
+.ck-body .ck-note{font-size:11.5px;line-height:1.65;color:var(--text-mute)}
+.ck-body > .ck-note,
+.ck-body p.ck-note{margin-top:0 !important;max-width:none}
+
+/* ---------- 窄列表（面板内的表格） ---------- */
 .ck-tab{width:100%;min-width:0;border-collapse:collapse}
 .ck-tab th{
   padding:5px 8px;border-bottom:1px solid var(--border-strong);
@@ -105,7 +134,7 @@ body.ck{padding-top:var(--nav-h);background:var(--bg)}
 .ck-tab td.go-col a{font-size:10.5px;font-weight:700;color:var(--text-mute);text-decoration:none}
 .ck-tab td.go-col a:hover{color:var(--accent)}
 
-/* 板块矩阵（9 格） */
+/* ---------- 板块矩阵（9 格） ---------- */
 .ck-matrix{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--border);border-radius:11px;overflow:hidden}
 .ck-cell{display:block;padding:11px 12px;color:inherit;text-decoration:none;border-right:1px solid var(--border);border-bottom:1px solid var(--border);transition:background .15s}
 .ck-cell:nth-child(3n){border-right:0}
@@ -118,7 +147,7 @@ body.ck{padding-top:var(--nav-h);background:var(--bg)}
 .ck-cell .mk{font-size:8.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--text-mute)}
 .ck-cell .mv{font-size:12.5px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.2px;margin-top:1px}
 
-/* 面板内的条带 / 小卡 */
+/* ---------- 面板内的条带 / 小卡 / 链接表 ---------- */
 .ck-split{display:grid;gap:14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
 .ck-split.two{grid-template-columns:1fr 1fr}
 .ck-split .ck-cap{font-size:10px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--text-mute);margin-bottom:8px}
@@ -130,9 +159,33 @@ body.ck{padding-top:var(--nav-h);background:var(--bg)}
 .ck-note{margin-top:10px;font-size:10.5px;line-height:1.6;color:var(--text-mute)}
 .ck-note b{color:var(--text-dim)}
 
+/* 面板内的「表 → 页」链接清单（派发页：本次写入的目标表） */
+.ck-links{display:grid;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:11px;overflow:hidden}
+.ck-links a{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--bg-card);color:inherit;text-decoration:none;transition:background .15s}
+.ck-links a:hover{background:var(--bg-hover)}
+.ck-links .ico{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:13px;background:var(--accent-glow);border:1px solid var(--border-strong);flex-shrink:0}
+.ck-links .nm{font-size:12.5px;font-weight:700}
+.ck-links .ds{font-size:10.5px;color:var(--text-mute);margin-top:1px}
+.ck-links .cv{margin-left:auto;font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.4px}
+.ck-links .ar{font-size:10.5px;color:var(--text-mute);font-weight:700}
+
 /* 24 小时时钟沿用原 .timeline / .tl-col / .tl-bar 类 */
 .ck-panel .timeline{margin-top:4px}
 .ck-panel .tl-axis{margin-bottom:0}
+.ck-panel .tl-window{font-size:11.5px;color:var(--text-mute);margin-top:10px}
+
+/* ---------- 容器查询：面板变窄时自动收一点密度 ---------- */
+@container (max-width:640px){
+  .bar-row{grid-template-columns:96px 1fr 72px;gap:9px}
+  .ck-cell .rows{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@container (max-width:400px){
+  .bar-row{grid-template-columns:1fr auto;grid-template-areas:'l v' 't t'}
+  .bar-row .bl{grid-area:l} .bar-row .bv{grid-area:v}
+  .bar-row .bar-track{grid-area:t}
+  .ck-tinystat{grid-template-columns:1fr}
+  .ck-split.two{grid-template-columns:1fr}
+}
 
 /* ---------- 响应式 ---------- */
 @media(max-width:1280px){
@@ -151,7 +204,14 @@ body.ck{padding-top:var(--nav-h);background:var(--bg)}
   .ck-matrix{grid-template-columns:1fr 1fr}
   .ck-cell:nth-child(3n){border-right:1px solid var(--border)}
   .ck-cell:nth-child(2n){border-right:0}
-  .ck-split.two{grid-template-columns:1fr}
-  .ck-tinystat{grid-template-columns:1fr}
   .ck-shell{padding:0 14px}
+  .ck-h1 span{font-size:12.5px}
+}
+
+/* ---------- 打印 ---------- */
+@media print{
+  .nav,.ck-rail,.footer,.demo-bar{display:none !important}
+  body.ck{padding-top:0;background:#fff}
+  .ck-shell{grid-template-columns:1fr;max-width:none;padding:0}
+  .ck-panel{break-inside:avoid;border-color:#ccc}
 }

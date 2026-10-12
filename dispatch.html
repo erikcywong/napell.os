@@ -11,8 +11,9 @@
 <meta property="og:type" content="website">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/console.css">
 </head>
-<body data-page="dispatch">
+<body class="ck" data-page="dispatch">
 
 <nav class="nav">
   <a class="nav-logo" href="index.html" style="text-decoration:none"><span class="dot"></span>NAPELL <span style="color:var(--text-mute);font-weight:500">Coffee Chain OS</span></a>
@@ -41,7 +42,7 @@
       </div>
     </div>
     <div class="nav-item">
-      <a class="nav-link" href="fleet.html">业务板块 <span class="chev">▼</span></a>
+      <a class="nav-link" href="boards.html">业务板块 <span class="chev">▼</span></a>
       <div class="dropdown" style="min-width:306px">
         <a class="dd-item" href="sector.html?agent=%E6%B0%94%E9%9B%BE%E6%A0%BD%E5%9F%B9%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">🌱</div><div><div class="dd-title">气雾栽培智能体</div><div class="dd-desc">板块① 雾化种植基地</div></div></a>
         <a class="dd-item" href="sector.html?agent=%E5%B7%A5%E8%89%BA%E5%A4%A7%E5%B8%88%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">⚗️</div><div><div class="dd-title">工艺大师智能体</div><div class="dd-desc">板块② 加工处理</div></div></a>
@@ -61,66 +62,113 @@
   </div>
 </nav>
 
-<section class="wrap first" id="dispatch">
-  <div class="crumb"><a href="index.html">总览</a><span>·</span><a href="fleet.html">运行</a><span>·</span><span style="color:var(--text-dim)">任务派发</span></div>
-  <div class="eyebrow">任务派发 · Dispatch Console</div>
-  <h2>给任意智能体下发一条工单</h2>
-  <p class="lead">提交后：工单写入「任务工单」、事件写入「事件总线」，并按 JEBI 口径计量计费、落一条「智能体账本」流水 —— 三表联动。</p>
+<div class="ck-shell">
 
-  <div class="panel">
-    <div class="panel-head">
-      <div class="t"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);display:inline-block"></span>智能体任务派发台</div>
-      <div class="meta" id="dispatchMeta">写入目标：任务工单 + 事件总线 + 计量账本</div>
+  <aside class="ck-rail">
+    <div class="ck-rail-block">
+      <div class="ck-rail-h">系统状态 <span class="live"><i></i>LIVE</span></div>
+      <div class="ck-mini" id="ckRailKpi"><div class="loading">状态同步中…</div></div>
+      <div class="ck-stamp" id="ckStamp">数据时间 同步中…</div>
     </div>
-    <div class="panel-body">
-      <form id="dispatchForm" novalidate>
-        <div class="form-grid">
-          <div class="field">
-            <label for="tk_title">任务标题</label>
-            <input id="tk_title" name="tk_title" type="text" maxlength="80" placeholder="例：雾化舱 7 号环境曲线自校准" required>
-            <span class="hint">必填，写入「任务工单 · 任务标题」</span>
-          </div>
-          <div class="field">
-            <label for="tk_agent">执行智能体</label>
-            <select id="tk_agent" name="tk_agent" required><option value="">加载中…</option></select>
-            <span class="hint">选项来自表结构，不写死</span>
-          </div>
-          <div class="field">
-            <label for="tk_cap">调用能力</label>
-            <input id="tk_cap" name="tk_cap" type="text" maxlength="60" list="capList" placeholder="选择智能体后自动推荐" required>
-            <datalist id="capList"></datalist>
-            <span class="hint">智能体可被调用的服务名</span>
-          </div>
-          <div class="field">
-            <label for="tk_prio">优先级</label>
-            <select id="tk_prio" name="tk_prio" required><option value="">加载中…</option></select>
-          </div>
-          <div class="field">
-            <label for="tk_from">发起方</label>
-            <input id="tk_from" name="tk_from" type="text" maxlength="40" value="人工控制台">
-          </div>
-          <div class="field">
-            <label for="tk_result">期望结果 / 备注</label>
-            <input id="tk_result" name="tk_result" type="text" maxlength="120" placeholder="例：本周期内完成，回执事件链">
-          </div>
-        </div>
-        <div class="lead" id="dispatchQuote" style="margin-top:16px;padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-card)">选择智能体与能力后，这里显示 JEBI 计量报价。</div>
-        <div class="form-actions">
-          <button class="btn btn-primary" type="submit" id="tkSubmit">下发工单</button>
-          <button class="btn" type="button" id="tickBtn">推进一个模拟周期</button>
-          <button class="btn" type="button" id="fillBtn">随机填入示例</button>
-          <span class="msg" id="tkMsg"></span>
-        </div>
-      </form>
-      <div id="receipt" hidden></div>
+
+    <div class="ck-rail-block">
+      <div class="ck-rail-h">本页分区</div>
+      <a class="ck-nav" href="#z1" data-ck-nav="z1"><span class="n">01</span>智能体任务派发台<span class="c" data-ck-count="tasks">—</span></a>
+      <a class="ck-nav" href="#z2" data-ck-nav="z2"><span class="n">02</span>本次写入的目标表<span class="c">—</span></a>
     </div>
-  </div>
-</section>
+
+    <div class="ck-rail-block">
+      <div class="ck-rail-h">动作</div>
+      <div class="ck-actions">
+        <a class="btn btn-primary ck-btn" href="board.html">工单看板</a>
+        <a class="btn ck-btn" href="bus.html">事件总线</a>
+        <a class="btn ck-btn" href="economy.html">经济体</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="ck-main">
+
+    <div class="ck-head">
+      <div class="crumb"><a href="index.html">总览</a><span>·</span><a href="fleet.html">运行</a><span>·</span><span style="color:var(--text-dim)">任务派发</span></div>
+      <h1 class="ck-h1">给任意智能体下发一条工单 <span>任务派发 · Dispatch Console</span></h1>
+      <p class="ck-sub">一次提交同时写入任务工单、事件总线与智能体账本 —— 三表联动，按 JEBI 口径计量计费。</p>
+      <div class="ck-strip" id="ckStrip">
+        <div class="c"><div class="ck-k">任务工单</div><div class="ck-v" data-m="tasks" data-fmt="int">—</div><div class="ck-u">张当前库存</div></div>
+        <div class="c"><div class="ck-k">事件总线</div><div class="ck-v" data-m="events" data-fmt="int">—</div><div class="ck-u">条可追溯</div></div>
+        <div class="c"><div class="ck-k">智能体账本</div><div class="ck-v" data-m="ledger" data-fmt="int">—</div><div class="ck-u">笔结算记录</div></div>
+        <div class="c"><div class="ck-k">计量成本</div><div class="ck-v" data-m="ledger_cost" data-fmt="money">—</div><div class="ck-u">先计量后定价</div></div>
+        <div class="c"><div class="ck-k">计费合计</div><div class="ck-v" data-m="ledger_jbp" data-fmt="int">—</div><div class="ck-u">JBP · 1 JBP = 0.1 CNY</div></div>
+        <div class="c"><div class="ck-k">运行周期</div><div class="ck-v" data-m="cycles" data-fmt="int">—</div><div class="ck-u">个时钟周期</div></div>
+      </div>
+    </div>
+
+    <div class="ck-grid">
+
+      <article class="ck-panel" id="z1" style="--span:7">
+        <div class="ck-ph"><span class="n">01</span><h2>智能体任务派发台</h2><span class="src" data-tbl="tasks">任务工单</span><a class="go" href="board.html">工单看板 →</a></div>
+        <div class="ck-body" data-sp-bindable="database" data-sp-database-id="xQspxv5gupTBY8LeSHVv5L">
+          <form id="dispatchForm" novalidate>
+            <div class="form-grid">
+              <div class="field">
+                <label for="tk_title">任务标题</label>
+                <input id="tk_title" name="tk_title" type="text" maxlength="80" placeholder="例：雾化舱 7 号环境曲线自校准" required>
+                <span class="hint">必填，写入「任务工单 · 任务标题」</span>
+              </div>
+              <div class="field">
+                <label for="tk_agent">执行智能体</label>
+                <select id="tk_agent" name="tk_agent" required><option value="">加载中…</option></select>
+                <span class="hint">选项来自表结构，不写死</span>
+              </div>
+              <div class="field">
+                <label for="tk_cap">调用能力</label>
+                <input id="tk_cap" name="tk_cap" type="text" maxlength="60" list="capList" placeholder="选择智能体后自动推荐" required>
+                <datalist id="capList"></datalist>
+                <span class="hint">智能体可被调用的服务名</span>
+              </div>
+              <div class="field">
+                <label for="tk_prio">优先级</label>
+                <select id="tk_prio" name="tk_prio" required><option value="">加载中…</option></select>
+              </div>
+              <div class="field">
+                <label for="tk_from">发起方</label>
+                <input id="tk_from" name="tk_from" type="text" maxlength="40" value="人工控制台">
+              </div>
+              <div class="field">
+                <label for="tk_result">期望结果 / 备注</label>
+                <input id="tk_result" name="tk_result" type="text" maxlength="120" placeholder="例：本周期内完成，回执事件链">
+              </div>
+            </div>
+            <div class="lead" id="dispatchQuote" style="margin-top:16px;padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-card)">选择智能体与能力后，这里显示 JEBI 计量报价。</div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit" id="tkSubmit">下发工单</button>
+              <button class="btn" type="button" id="tickBtn">推进一个模拟周期</button>
+              <button class="btn" type="button" id="fillBtn">随机填入示例</button>
+              <span class="msg" id="tkMsg"></span>
+            </div>
+          </form>
+          <div id="receipt" hidden></div>
+        </div>
+      </article>
+
+      <article class="ck-panel" id="z2" style="--span:5">
+        <div class="ck-ph"><span class="n">02</span><h2>本次写入的目标表</h2><span class="src" data-tbl="tasks">任务工单</span><a class="go" href="economy.html">计量口径 →</a></div>
+        <div class="ck-body" data-sp-bindable="database" data-sp-database-id="xQspxv5gupTBY8LeSHVv5L">
+          <div class="ck-note">提交一次派发会同时落到三张表，并在「智能体账本」按 JEBI 口径计量计费。</div>
+                  <div class="ck-links" id="ckLinks"><div class="loading">目标表加载中…</div></div>
+        </div>
+      </article>
+
+    </div>
+
+  </main>
+</div>
 
 <footer class="footer">
   <div class="wrap">
     <div class="fl">
       <a href="index.html">总览</a>
+      <a href="boards.html">经典网格</a>
       <a href="fleet.html">智能体舰队</a>
       <a href="dispatch.html">任务派发</a>
       <a href="bus.html">事件总线</a>
@@ -138,6 +186,7 @@
 
 <script src="assets/js/snapshot.js" defer></script>
 <script src="assets/js/shim.js" defer></script>
+<script src="assets/js/rail.js" defer></script>
 <script src="assets/js/os.js" defer></script>
 </body>
 </html>

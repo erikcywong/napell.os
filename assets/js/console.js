@@ -6,12 +6,32 @@
 (function () {
   'use strict';
 
+  /* ---------------- 数据接入 ----------------
+     每张表一条 SDK 入口，且**每条 db.query / db.aggregate 调用体内都带字面量 databaseId**
+     （静态校验要求，见 data-page-flow.md §1.5.5：调用处必须能直接看到 id，不能只靠变量）。
+     表名 → id 的映射只在这里出现一次，避免十几处调用各自复制粘贴而走样。 */
+  function rowsOf(res) { return (res && res.results) ? res.results : []; }
   var T = {
-    agents: 'cFRjJqhyp5LDaCZHPp3XVm',
-    events: 'ND8kO27PEOFohwZHxm6WgV',
-    tasks: 'xQspxv5gupTBY8LeSHVv5L',
-    ledger: 'dmRghisDSmokozzg8GMuwv',
-    cycles: 'HZm1EBKdHUmqRMNIasCJfm'
+    agents: {
+      query: function (o) { return db.query(Object.assign({ databaseId: 'cFRjJqhyp5LDaCZHPp3XVm' }, o || {})).then(rowsOf); },
+      agg: function (a) { return db.aggregate({ databaseId: 'cFRjJqhyp5LDaCZHPp3XVm', aggregates: a }); }
+    },
+    events: {
+      query: function (o) { return db.query(Object.assign({ databaseId: 'ND8kO27PEOFohwZHxm6WgV' }, o || {})).then(rowsOf); },
+      agg: function (a) { return db.aggregate({ databaseId: 'ND8kO27PEOFohwZHxm6WgV', aggregates: a }); }
+    },
+    tasks: {
+      query: function (o) { return db.query(Object.assign({ databaseId: 'xQspxv5gupTBY8LeSHVv5L' }, o || {})).then(rowsOf); },
+      agg: function (a) { return db.aggregate({ databaseId: 'xQspxv5gupTBY8LeSHVv5L', aggregates: a }); }
+    },
+    ledger: {
+      query: function (o) { return db.query(Object.assign({ databaseId: 'dmRghisDSmokozzg8GMuwv' }, o || {})).then(rowsOf); },
+      agg: function (a) { return db.aggregate({ databaseId: 'dmRghisDSmokozzg8GMuwv', aggregates: a }); }
+    },
+    cycles: {
+      query: function (o) { return db.query(Object.assign({ databaseId: 'HZm1EBKdHUmqRMNIasCJfm' }, o || {})).then(rowsOf); },
+      agg: function (a) { return db.aggregate({ databaseId: 'HZm1EBKdHUmqRMNIasCJfm', aggregates: a }); }
+    }
   };
 
   var S = { agents: [], rail: {}, matrix: {}, stamps: [] };
@@ -30,6 +50,7 @@
     return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
+  var db = null;
   function SDK() { return window.__SMART_PAGE__ && window.__SMART_PAGE__.database; }
   function num(v) { return (v === null || v === undefined || v === '') ? null : Number(v); }
   function fmtInt(v) {
@@ -116,15 +137,9 @@
   }
   function meta(host, html) { if (host) { host.innerHTML = html; } }
 
-  /* ---------------- 数据访问：一次翻页拉全（短表够用） ---------------- */
-  function query(dbId, opts) {
-    return SDK().query(Object.assign({ databaseId: dbId }, opts || {})).then(function (res) {
-      return (res && res.results) ? res.results : [];
-    });
-  }
-  function agg(dbId, aggregates) {
-    return SDK().aggregate({ databaseId: dbId, aggregates: aggregates });
-  }
+  /* ---------------- 数据访问 ----------------
+     具体 SDK 调用集中在文件顶部的 T 门面上（每条调用带字面量 databaseId）；
+     这里只保留统一的错误兜底。 */
   function guard(hostId, work) {
     return work.catch(function (err) { errBox($(hostId), (err && err.message) || '请稍后重试'); });
   }
@@ -390,11 +405,10 @@
 
   /* ---------------- 启动 ---------------- */
   function run() {
-    var db = SDK();
     spy();
 
     /* 1) 注册表 —— 舰队 / 矩阵 / 左轨 */
-    guard('ckFleet', query(T.agents, { pageSize: 200, sorts: [{ property: '服务调用', direction: 'descending' }] })
+    guard('ckFleet', T.agents.query({ pageSize: 200, sorts: [{ property: '服务调用', direction: 'descending' }] })
       .then(function (rows) {
         S.agents = rows;
         renderFleet();
@@ -405,7 +419,7 @@
           inAgg.push({ name: 'in_' + i, type: 'sum', property: '金额', filter: { property: { property: '收款方', text: { equals: n } } } });
           outAgg.push({ name: 'out_' + i, type: 'sum', property: '金额', filter: { property: { property: '付款方', text: { equals: n } } } });
         });
-        return Promise.all([agg(T.ledger, inAgg), agg(T.ledger, outAgg)]);
+        return Promise.all([T.ledger.agg(inAgg), T.ledger.agg(outAgg)]);
       })
       .then(function (r) {
         S.rail.lgIn = byName(r[0]);
@@ -414,44 +428,44 @@
       }));
 
     /* 2) 注册表聚合（状态分布供左轨用） */
-    guard('ckFleet', agg(T.agents, [{ name: 'total', type: 'count' }, { name: 'by_status', type: 'count', groupBy: '运行状态' }])
+    guard('ckFleet', T.agents.agg([{ name: 'total', type: 'count' }, { name: 'by_status', type: 'count', groupBy: '运行状态' }])
       .then(function (rsp) { S.rail.agents = byName(rsp); renderRail(); }));
 
     /* 3) 任务工单 → 矩阵 / 页首 */
-    guard('ckMatrix', agg(T.tasks, [
+    guard('ckMatrix', T.tasks.agg([
       { name: 'total', type: 'count' },
       { name: 'by_state', type: 'count', groupBy: '任务状态' },
       { name: 'by_agent', type: 'count', groupBy: '执行智能体' }
     ]).then(function (rsp) { S.rail.tasks = byName(rsp); renderMatrix(); renderRail(); }));
 
     /* 4) 事件总线 → 分布 + 最近 8 条 */
-    guard('ckEvents', agg(T.events, [
+    guard('ckEvents', T.events.agg([
       { name: 'total', type: 'count' },
       { name: 'by_state', type: 'count', groupBy: '处理状态' },
       { name: 'by_src', type: 'count', groupBy: '来源智能体' }
     ]).then(function (rsp) { S.rail.events = byName(rsp); renderEvents(null); renderMatrix(); renderRail(); }));
 
-    guard('ckEvents', query(T.events, { pageSize: 8, sorts: [{ property: '发生时间', direction: 'descending' }] })
+    guard('ckEvents', T.events.query({ pageSize: 8, sorts: [{ property: '发生时间', direction: 'descending' }] })
       .then(function (rows) { S.recentEvents = rows; renderEvents(rows); }));
 
     /* 5) 账本：计量汇总 + 计价角色 + 最近 6 笔 */
-    guard('ckMeter', agg(T.ledger, [
+    guard('ckMeter', T.ledger.agg([
       { name: 'total', type: 'count' },
       { name: 'sum_amount', type: 'sum', property: '金额' },
       { name: 'sum_cost', type: 'sum', property: '计量成本' },
       { name: 'sum_jbp', type: 'sum', property: '计费JBP' }
     ]).then(function (rsp) { S.rail.meter = byName(rsp); renderEco(); renderRail(); }));
 
-    guard('ckRoles', agg(T.ledger, [
+    guard('ckRoles', T.ledger.agg([
       { name: 'total', type: 'count' },
       { name: 'by_role', type: 'count', groupBy: '计价角色' }
     ]).then(function (rsp) { S.rail.meterRole = byName(rsp).by_role || []; renderEco(); }));
 
-    guard('ckLedger', query(T.ledger, { pageSize: 6, sorts: [{ property: '结算时间', direction: 'descending' }] })
+    guard('ckLedger', T.ledger.query({ pageSize: 6, sorts: [{ property: '结算时间', direction: 'descending' }] })
       .then(function (rows) { renderLedger(rows); }));
 
     /* 6) 运行周期：汇总 + 最近 24 个窗口 */
-    guard('ckTimeline', agg(T.cycles, [
+    guard('ckTimeline', T.cycles.agg([
       { name: 'total', type: 'count' },
       { name: 'sum_tasks', type: 'sum', property: '完成任务数' },
       { name: 'sum_events', type: 'sum', property: '触发事件数' },
@@ -461,7 +475,7 @@
       { name: 'sum_finance', type: 'sum', property: '融资额' }
     ]).then(function (rsp) { S.rail.cy = byName(rsp); renderCycles(null); renderRail(); }));
 
-    guard('ckTimeline', query(T.cycles, { pageSize: 24, sorts: [{ property: '开始时间', direction: 'descending' }] })
+    guard('ckTimeline', T.cycles.query({ pageSize: 24, sorts: [{ property: '开始时间', direction: 'descending' }] })
       .then(function (rows) { renderCycles(rows); }));
 
     if (!db) { errBox($('ckFleet'), '数据环境未就绪'); }
@@ -470,7 +484,7 @@
   function boot() {
     var tries = 0;
     (function wait() {
-      if (SDK()) { run(); return; }
+      if (SDK()) { db = SDK(); run(); return; }
       if (++tries > 60) { errBox($('ckFleet'), '数据环境未就绪'); return; }
       setTimeout(wait, 200);
     })();

@@ -11,8 +11,9 @@
 <meta property="og:type" content="website">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/console.css">
 </head>
-<body data-page="cycles">
+<body class="ck" data-page="cycles">
 
 <nav class="nav">
   <a class="nav-logo" href="index.html" style="text-decoration:none"><span class="dot"></span>NAPELL <span style="color:var(--text-mute);font-weight:500">Coffee Chain OS</span></a>
@@ -41,7 +42,7 @@
       </div>
     </div>
     <div class="nav-item">
-      <a class="nav-link" href="fleet.html">业务板块 <span class="chev">▼</span></a>
+      <a class="nav-link" href="boards.html">业务板块 <span class="chev">▼</span></a>
       <div class="dropdown" style="min-width:306px">
         <a class="dd-item" href="sector.html?agent=%E6%B0%94%E9%9B%BE%E6%A0%BD%E5%9F%B9%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">🌱</div><div><div class="dd-title">气雾栽培智能体</div><div class="dd-desc">板块① 雾化种植基地</div></div></a>
         <a class="dd-item" href="sector.html?agent=%E5%B7%A5%E8%89%BA%E5%A4%A7%E5%B8%88%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">⚗️</div><div><div class="dd-title">工艺大师智能体</div><div class="dd-desc">板块② 加工处理</div></div></a>
@@ -61,36 +62,96 @@
   </div>
 </nav>
 
-<section class="wrap first" id="cycles">
-  <div class="crumb"><a href="index.html">总览</a><span>·</span><a href="bus.html">数据</a><span>·</span><span style="color:var(--text-dim)">24 小时时钟</span></div>
-  <div class="eyebrow">24 小时运行 · Clock Cycles <span class="sec-live"><span class="d"></span>每小时自动推进</span></div>
-  <h2>最近 24 小时时钟推进</h2>
-  <p class="lead">每小时自动运行一个周期：采数据、跑工艺、上链存证、撮合交易、回流金融。柱高为该小时生豆产出（kg），绿柱=当前运行中，红柱=异常周期。</p>
-  <div class="card" style="margin-top:26px">
-    <div class="timeline" id="tlBars"><div class="loading">周期数据加载中…</div></div>
-    <div class="tl-axis" id="tlAxis"></div>
-    <div id="tlWindow" style="font-size:11.5px;color:var(--text-mute);margin-top:10px"></div>
-  </div>
-  <div class="stats" id="cyStats" style="margin-top:24px"></div>
-  <h3 style="margin-top:34px">周期明细</h3>
-  <div class="tw">
-    <table>
-      <thead><tr><th>周期编号</th><th>类型</th><th>状态</th><th>开始时间</th><th class="num">事件</th><th class="num">完成工单</th><th class="num">生豆kg</th><th class="num">碳减排kg</th><th class="num">仓单</th><th class="num">融资额</th><th>备注</th></tr></thead>
-      <tbody id="cyBody"><tr><td colspan="11"><div class="loading">周期明细加载中…</div></td></tr></tbody>
-    </table>
-  </div>
-  <div class="toolbar" style="margin-top:13px">
-    <button class="btn btn-sm" type="button" id="cyPrev">上一页</button>
-    <button class="btn btn-sm" type="button" id="cyNext">下一页</button>
-    <span class="sp" id="cyPageInfo">—</span>
-  </div>
-  <div id="cyErr"></div>
-</section>
+<div class="ck-shell">
+
+  <aside class="ck-rail">
+    <div class="ck-rail-block">
+      <div class="ck-rail-h">系统状态 <span class="live"><i></i>LIVE</span></div>
+      <div class="ck-mini" id="ckRailKpi"><div class="loading">状态同步中…</div></div>
+      <div class="ck-stamp" id="ckStamp">数据时间 同步中…</div>
+    </div>
+
+    <div class="ck-rail-block">
+      <div class="ck-rail-h">本页分区</div>
+      <a class="ck-nav" href="#z1" data-ck-nav="z1"><span class="n">01</span>24 小时时钟推进<span class="c" data-ck-count="cycles">—</span></a>
+      <a class="ck-nav" href="#z2" data-ck-nav="z2"><span class="n">02</span>周期汇总<span class="c" data-ck-count="cycles">—</span></a>
+      <a class="ck-nav" href="#z3" data-ck-nav="z3"><span class="n">03</span>周期明细<span class="c" data-ck-count="cycles">—</span></a>
+    </div>
+
+    <div class="ck-rail-block">
+      <div class="ck-rail-h">动作</div>
+      <div class="ck-actions">
+        <a class="btn btn-primary ck-btn" href="kpi.html">运行 KPI</a>
+        <a class="btn ck-btn" href="bus.html">事件总线</a>
+        <a class="btn ck-btn" href="economy.html">经济体</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="ck-main">
+
+    <div class="ck-head">
+      <div class="crumb"><a href="index.html">总览</a><span>·</span><a href="bus.html">数据</a><span>·</span><span style="color:var(--text-dim)">24 小时时钟</span></div>
+      <h1 class="ck-h1">最近 24 小时时钟推进 <span>24 小时运行 · Clock Cycles <span class="sec-live"><span class="d"></span>每小时自动推进</span></span></h1>
+      <p class="ck-sub">每小时自动推进一个周期：采数据、跑工艺、上链存证、撮合交易、回流金融。柱高为该小时生豆产出（kg）。</p>
+      <div class="ck-strip" id="ckStrip">
+        <div class="c"><div class="ck-k">运行周期</div><div class="ck-v" data-m="cycles" data-fmt="int">—</div><div class="ck-u">个时钟周期</div></div>
+        <div class="c"><div class="ck-k">周期内工单</div><div class="ck-v" data-m="cy_tasks" data-fmt="int">—</div><div class="ck-u">张完成</div></div>
+        <div class="c"><div class="ck-k">周期内事件</div><div class="ck-v" data-m="cy_events" data-fmt="int">—</div><div class="ck-u">条触发</div></div>
+        <div class="c"><div class="ck-k">生豆产出</div><div class="ck-v" data-m="cy_output" data-fmt="fixed1">—</div><div class="ck-u">kg · 雾化水培</div></div>
+        <div class="c"><div class="ck-k">碳减排</div><div class="ck-v" data-m="cy_carbon" data-fmt="fixed1">—</div><div class="ck-u">kg CO₂e</div></div>
+        <div class="c"><div class="ck-k">仓单融资</div><div class="ck-v" data-m="cy_finance" data-fmt="money">—</div><div class="ck-u">产业链金融化</div></div>
+      </div>
+    </div>
+
+    <div class="ck-grid">
+
+      <article class="ck-panel" id="z1" style="--span:7">
+        <div class="ck-ph"><span class="n">01</span><h2>24 小时时钟推进</h2><span class="src" data-tbl="cycles">运行周期</span><a class="go" href="kpi.html">运行 KPI →</a></div>
+        <div class="ck-body" data-sp-bindable="database" data-sp-database-id="HZm1EBKdHUmqRMNIasCJfm">
+          <div class="ck-flat">
+              <div class="timeline" id="tlBars"><div class="loading">周期数据加载中…</div></div>
+              <div class="tl-axis" id="tlAxis"></div>
+              <div id="tlWindow" style="font-size:11.5px;color:var(--text-mute);margin-top:10px"></div>
+            </div>
+        </div>
+      </article>
+
+      <article class="ck-panel" id="z2" style="--span:5">
+        <div class="ck-ph"><span class="n">02</span><h2>周期汇总</h2><span class="src" data-tbl="cycles">运行周期</span><a class="go" href="economy.html">经济体 →</a></div>
+        <div class="ck-body" data-sp-bindable="database" data-sp-database-id="HZm1EBKdHUmqRMNIasCJfm">
+          <div class="stats" id="cyStats" style="margin-top:24px"></div>
+        </div>
+      </article>
+
+      <article class="ck-panel" id="z3" style="--span:12">
+        <div class="ck-ph"><span class="n">03</span><h2>周期明细</h2><span class="src" data-tbl="cycles">运行周期</span><a class="go" href="kpi.html">运行 KPI →</a></div>
+        <div class="ck-body" data-sp-bindable="database" data-sp-database-id="HZm1EBKdHUmqRMNIasCJfm">
+          <div class="tw">
+              <table>
+                <thead><tr><th>周期编号</th><th>类型</th><th>状态</th><th>开始时间</th><th class="num">事件</th><th class="num">完成工单</th><th class="num">生豆kg</th><th class="num">碳减排kg</th><th class="num">仓单</th><th class="num">融资额</th><th>备注</th></tr></thead>
+                <tbody id="cyBody"><tr><td colspan="11"><div class="loading">周期明细加载中…</div></td></tr></tbody>
+              </table>
+            </div>
+          <div class="toolbar" style="margin-top:13px">
+              <button class="btn btn-sm" type="button" id="cyPrev">上一页</button>
+              <button class="btn btn-sm" type="button" id="cyNext">下一页</button>
+              <span class="sp" id="cyPageInfo">—</span>
+            </div>
+          <div id="cyErr"></div>
+        </div>
+      </article>
+
+    </div>
+
+  </main>
+</div>
 
 <footer class="footer">
   <div class="wrap">
     <div class="fl">
       <a href="index.html">总览</a>
+      <a href="boards.html">经典网格</a>
       <a href="fleet.html">智能体舰队</a>
       <a href="dispatch.html">任务派发</a>
       <a href="bus.html">事件总线</a>
@@ -108,6 +169,7 @@
 
 <script src="assets/js/snapshot.js" defer></script>
 <script src="assets/js/shim.js" defer></script>
+<script src="assets/js/rail.js" defer></script>
 <script src="assets/js/os.js" defer></script>
 </body>
 </html>

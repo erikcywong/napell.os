@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>经典网格视图 · Napell Coffee Chain OS</title>
+<meta name="description" content="Napell 咖啡全产业链 9 大智能体运行控制系统的经典网格视图：17 张入口卡 + 数据表台账。">
+<meta name="theme-color" content="#000000">
+<meta property="og:title" content="Napell Coffee Chain OS · 经典网格视图">
+<meta property="og:description" content="9 智能体 · 事件总线 · 任务调度 · 经济体结算 · 24 小时周期">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="index">
+
+<nav class="nav">
+  <a class="nav-logo" href="index.html" style="text-decoration:none"><span class="dot"></span>NAPELL <span style="color:var(--text-mute);font-weight:500">Coffee Chain OS</span></a>
+  <div class="nav-menu">
+    <a class="nav-link on" href="index.html">总览</a>
+    <div class="nav-item">
+      <a class="nav-link" href="fleet.html">运行 <span class="chev">▼</span></a>
+      <div class="dropdown">
+        <a class="dd-item" href="fleet.html"><div class="dd-icon">🤖</div><div><div class="dd-title">智能体舰队</div><div class="dd-desc">九体状态、心跳与信用积分</div></div></a>
+        <a class="dd-item" href="dispatch.html"><div class="dd-icon">🎛️</div><div><div class="dd-title">任务派发</div><div class="dd-desc">下发工单，工单 / 事件 / 账本三表联动</div></div></a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a class="nav-link" href="bus.html">数据 <span class="chev">▼</span></a>
+      <div class="dropdown">
+        <a class="dd-item" href="bus.html"><div class="dd-icon">📡</div><div><div class="dd-title">事件总线</div><div class="dd-desc">全链事件流与处理状态分布</div></div></a>
+        <a class="dd-item" href="board.html"><div class="dd-icon">🗂️</div><div><div class="dd-title">工单看板</div><div class="dd-desc">调度中工单可人工回执完成</div></div></a>
+        <a class="dd-item" href="cycles.html"><div class="dd-icon">🕒</div><div><div class="dd-title">24 小时时钟</div><div class="dd-desc">每小时自动推进一个周期</div></div></a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a class="nav-link" href="economy.html">经济 <span class="chev">▼</span></a>
+      <div class="dropdown">
+        <a class="dd-item" href="economy.html"><div class="dd-icon">💠</div><div><div class="dd-title">智能体经济体</div><div class="dd-desc">服务付费、JEBI 计量引擎与结算流水</div></div></a>
+        <a class="dd-item" href="kpi.html"><div class="dd-icon">📊</div><div><div class="dd-title">运行 KPI</div><div class="dd-desc">全周期实测产出汇总</div></div></a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a class="nav-link" href="boards.html">业务板块 <span class="chev">▼</span></a>
+      <div class="dropdown" style="min-width:306px">
+        <a class="dd-item" href="sector.html?agent=%E6%B0%94%E9%9B%BE%E6%A0%BD%E5%9F%B9%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">🌱</div><div><div class="dd-title">气雾栽培智能体</div><div class="dd-desc">板块① 雾化种植基地</div></div></a>
+        <a class="dd-item" href="sector.html?agent=%E5%B7%A5%E8%89%BA%E5%A4%A7%E5%B8%88%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">⚗️</div><div><div class="dd-title">工艺大师智能体</div><div class="dd-desc">板块② 加工处理</div></div></a>
+        <a class="dd-item" href="sector.html?agent=%E6%9B%B2%E7%BA%BF%E5%BC%95%E6%93%8E%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">📈</div><div><div class="dd-title">曲线引擎智能体</div><div class="dd-desc">板块③ 烘焙与烘焙曲线交易</div></div></a>
+        <a class="dd-item" href="sector.html?agent=%E8%B1%86%E4%BB%93%E9%93%B6%E8%A1%8C%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">🏦</div><div><div class="dd-title">豆仓银行智能体</div><div class="dd-desc">板块④ 咖啡豆储存银行</div></div></a>
+        <a class="dd-item" href="sector.html?agent=%E9%9B%B6%E7%A2%B3%E5%95%86%E5%9F%8E%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">🏬</div><div><div class="dd-title">零碳商城智能体</div><div class="dd-desc">板块⑤ 零碳购物中心</div></div></a>
+        <a class="dd-item" href="sector.html?agent=%E7%A2%B3%E8%B4%A6%E6%9C%AC%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">🌍</div><div><div class="dd-title">碳账本智能体</div><div class="dd-desc">板块⑥ 碳指标交易市场</div></div></a>
+        <a class="dd-item" href="sector.html?agent=%E8%BF%9E%E9%94%81%E9%A2%86%E8%88%AA%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">🚚</div><div><div class="dd-title">连锁领航智能体</div><div class="dd-desc">板块⑦ 咖啡连锁（门店 + 移动车）</div></div></a>
+        <a class="dd-item" href="sector.html?agent=REITs%20%E5%BB%BA%E7%AD%91%E5%B8%88%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">📜</div><div><div class="dd-title">REITs 建筑师智能体</div><div class="dd-desc">板块⑧ 产业链 REITs 中心</div></div></a>
+        <a class="dd-item" href="sector.html?agent=%E4%B8%AD%E6%9E%A2%E7%A5%9E%E7%BB%8F%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">🧠</div><div><div class="dd-title">中枢神经智能体</div><div class="dd-desc">板块⑨ 咖啡 AI Agent（芯片 + 组培）</div></div></a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-cta">
+    <a class="btn" href="bus.html">事件总线</a>
+    <a class="btn btn-primary" href="dispatch.html">派发任务</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Napell · 咖啡全产业链智能体运行控制系统</div>
+    <h1>九个智能体，<span class="grad">24 小时</span>自主运行</h1>
+    <p class="lead">
+      这是 dashboard 的可运行版本。智能体注册表、事件总线、任务工单、经济体账本与运行周期全部落在资料库数据表上：
+      派发的每一条工单都会写回线上表，并自动在事件总线上生成一条可追溯事件。
+    </p>
+    <div class="hero-badges">
+      <span class="badge"><span class="d"></span>数据表驱动</span>
+      <span class="badge"><span class="d a"></span>任务可下发</span>
+      <span class="badge"><span class="d"></span>事件可追溯</span>
+      <span class="badge"><span class="d w"></span>每小时自动推进</span>
+      <span class="badge"><span class="d a"></span>24 小时周期视图</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="k">在册智能体</div><div class="v" id="kpiAgents" data-sp-bindable="database" data-sp-database-id="cFRjJqhyp5LDaCZHPp3XVm">—</div><div class="u">覆盖九大板块</div></div>
+      <div class="stat"><div class="k">全链事件</div><div class="v" id="kpiEvents" data-sp-bindable="database" data-sp-database-id="ND8kO27PEOFohwZHxm6WgV">—</div><div class="u">条可追溯事件</div></div>
+      <div class="stat"><div class="k">任务工单</div><div class="v" id="kpiTasks" data-sp-bindable="database" data-sp-database-id="xQspxv5gupTBY8LeSHVv5L">—</div><div class="u">张（含人工下发）</div></div>
+      <div class="stat"><div class="k">运行周期</div><div class="v" id="kpiCycles" data-sp-bindable="database" data-sp-database-id="HZm1EBKdHUmqRMNIasCJfm">—</div><div class="u">个时钟周期</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="wrap" id="boards">
+  <div class="eyebrow">板块导航 · Boards</div>
+  <h2>八个板块，各占一页</h2>
+  <p class="lead">滚动长页已经拆开：每个板块有自己的地址、自己的数据读取范围。导航栏悬停即可跨板块跳转，浏览器前进后退也能正常工作。</p>
+  <div class="board-grid" data-sp-bindable="database" data-sp-database-id="cFRjJqhyp5LDaCZHPp3XVm">
+      <a class="board-card" href="index.html"><div class="bi">🧭</div><div><div class="bn">BOARD 00</div><div class="bt">总览</div><div class="bd">九智能体运行控制台 · 板块入口</div></div></a>
+      <a class="board-card" href="fleet.html"><div class="bi">🤖</div><div><div class="bn">BOARD 01</div><div class="bt">智能体舰队</div><div class="bd">九体状态、心跳与信用积分</div></div></a>
+      <a class="board-card" href="dispatch.html"><div class="bi">🎛️</div><div><div class="bn">BOARD 02</div><div class="bt">任务派发</div><div class="bd">下发工单，工单 / 事件 / 账本三表联动</div></div></a>
+      <a class="board-card" href="bus.html"><div class="bi">📡</div><div><div class="bn">BOARD 03</div><div class="bt">事件总线</div><div class="bd">全链事件流与处理状态分布</div></div></a>
+      <a class="board-card" href="board.html"><div class="bi">🗂️</div><div><div class="bn">BOARD 04</div><div class="bt">工单看板</div><div class="bd">调度中工单可人工回执完成</div></div></a>
+      <a class="board-card" href="cycles.html"><div class="bi">🕒</div><div><div class="bn">BOARD 05</div><div class="bt">24 小时时钟</div><div class="bd">每小时自动推进一个周期</div></div></a>
+      <a class="board-card" href="economy.html"><div class="bi">💠</div><div><div class="bn">BOARD 06</div><div class="bt">智能体经济体</div><div class="bd">服务付费、JEBI 计量引擎与结算流水</div></div></a>
+      <a class="board-card" href="kpi.html"><div class="bi">📊</div><div><div class="bn">BOARD 07</div><div class="bt">运行 KPI</div><div class="bd">全周期实测产出汇总</div></div></a>
+  </div>
+
+  <h3 style="margin-top:42px">九个业务板块 · 一个智能体一页</h3>
+  <p class="lead">产业链上的九个板块各有一个智能体。点开任意板块，进入它自己的运行视图（档案 / 能力 / 工单 / 事件 / 结算）。</p>
+  <div class="board-grid" data-sp-bindable="database" data-sp-database-id="cFRjJqhyp5LDaCZHPp3XVm">
+      <a class="board-card" href="sector.html?agent=%E6%B0%94%E9%9B%BE%E6%A0%BD%E5%9F%B9%E6%99%BA%E8%83%BD%E4%BD%93"><div class="bi">🌱</div><div><div class="bn">SECTOR 01</div><div class="bt">气雾栽培智能体</div><div class="bd">板块① 雾化种植基地</div></div></a>
+      <a class="board-card" href="sector.html?agent=%E5%B7%A5%E8%89%BA%E5%A4%A7%E5%B8%88%E6%99%BA%E8%83%BD%E4%BD%93"><div class="bi">⚗️</div><div><div class="bn">SECTOR 02</div><div class="bt">工艺大师智能体</div><div class="bd">板块② 加工处理</div></div></a>
+      <a class="board-card" href="sector.html?agent=%E6%9B%B2%E7%BA%BF%E5%BC%95%E6%93%8E%E6%99%BA%E8%83%BD%E4%BD%93"><div class="bi">📈</div><div><div class="bn">SECTOR 03</div><div class="bt">曲线引擎智能体</div><div class="bd">板块③ 烘焙与烘焙曲线交易</div></div></a>
+      <a class="board-card" href="sector.html?agent=%E8%B1%86%E4%BB%93%E9%93%B6%E8%A1%8C%E6%99%BA%E8%83%BD%E4%BD%93"><div class="bi">🏦</div><div><div class="bn">SECTOR 04</div><div class="bt">豆仓银行智能体</div><div class="bd">板块④ 咖啡豆储存银行</div></div></a>
+      <a class="board-card" href="sector.html?agent=%E9%9B%B6%E7%A2%B3%E5%95%86%E5%9F%8E%E6%99%BA%E8%83%BD%E4%BD%93"><div class="bi">🏬</div><div><div class="bn">SECTOR 05</div><div class="bt">零碳商城智能体</div><div class="bd">板块⑤ 零碳购物中心</div></div></a>
+      <a class="board-card" href="sector.html?agent=%E7%A2%B3%E8%B4%A6%E6%9C%AC%E6%99%BA%E8%83%BD%E4%BD%93"><div class="bi">🌍</div><div><div class="bn">SECTOR 06</div><div class="bt">碳账本智能体</div><div class="bd">板块⑥ 碳指标交易市场</div></div></a>
+      <a class="board-card" href="sector.html?agent=%E8%BF%9E%E9%94%81%E9%A2%86%E8%88%AA%E6%99%BA%E8%83%BD%E4%BD%93"><div class="bi">🚚</div><div><div class="bn">SECTOR 07</div><div class="bt">连锁领航智能体</div><div class="bd">板块⑦ 咖啡连锁（门店 + 移动车）</div></div></a>
+      <a class="board-card" href="sector.html?agent=REITs%20%E5%BB%BA%E7%AD%91%E5%B8%88%E6%99%BA%E8%83%BD%E4%BD%93"><div class="bi">📜</div><div><div class="bn">SECTOR 08</div><div class="bt">REITs 建筑师智能体</div><div class="bd">板块⑧ 产业链 REITs 中心</div></div></a>
+      <a class="board-card" href="sector.html?agent=%E4%B8%AD%E6%9E%A2%E7%A5%9E%E7%BB%8F%E6%99%BA%E8%83%BD%E4%BD%93"><div class="bi">🧠</div><div><div class="bn">SECTOR 09</div><div class="bt">中枢神经智能体</div><div class="bd">板块⑨ 咖啡 AI Agent（芯片 + 组培）</div></div></a>
+  </div>
+</section>
+
+<section class="wrap" id="tables">
+  <div class="eyebrow">数据底座 · Data Tables</div>
+  <h2>五张表，一处台账</h2>
+  <p class="lead">页面上每一个数字都来自这 5 张资料库数据表 —— 没有本地 mock，也没有前端自算的假数。</p>
+  <div class="card" style="margin-top:26px">
+    <h3>📊 数据表台账</h3>
+    <p style="font-size:12.5px;color:var(--text-dim);margin-bottom:12px">本系统共绑定 5 张资料库数据表，各板块页面按需读取。</p>
+    <div class="tw" data-sp-bindable="database" data-sp-database-id="cFRjJqhyp5LDaCZHPp3XVm">
+      <table>
+        <thead><tr><th>数据表</th><th>用途</th><th class="num">记录数</th><th>状态</th></tr></thead>
+        <tbody id="tblBody"><tr><td colspan="4"><div class="loading">台账加载中…</div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="fl">
+      <a href="index.html">总览</a>
+      <a href="boards.html">经典网格</a>
+      <a href="fleet.html">智能体舰队</a>
+      <a href="dispatch.html">任务派发</a>
+      <a href="bus.html">事件总线</a>
+      <a href="board.html">工单看板</a>
+      <a href="economy.html">经济体</a>
+      <a href="cycles.html">24 小时周期</a>
+      <a href="kpi.html">运行 KPI</a>
+    </div>
+    <div class="cp">
+      Napell Coffee Chain OS · 咖啡全产业链智能体生态系统（可交互运行版）<br>
+      数据存储于资料库在线数据表 · 每小时自动推进一个时钟周期 · 数据与 dashboard 展示口径一致
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/snapshot.js" defer></script>
+<script src="assets/js/shim.js" defer></script>
+<script src="assets/js/os.js" defer></script>
+</body>
+</html>

@@ -11,8 +11,9 @@
 <meta property="og:type" content="website">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/console.css">
 </head>
-<body data-page="sector">
+<body class="ck" data-page="sector">
 
 <nav class="nav">
   <a class="nav-logo" href="index.html" style="text-decoration:none"><span class="dot"></span>NAPELL <span style="color:var(--text-mute);font-weight:500">Coffee Chain OS</span></a>
@@ -41,7 +42,7 @@
       </div>
     </div>
     <div class="nav-item">
-      <a class="nav-link on" href="fleet.html">业务板块 <span class="chev">▼</span></a>
+      <a class="nav-link on" href="boards.html">业务板块 <span class="chev">▼</span></a>
       <div class="dropdown" style="min-width:306px">
         <a class="dd-item" href="sector.html?agent=%E6%B0%94%E9%9B%BE%E6%A0%BD%E5%9F%B9%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">🌱</div><div><div class="dd-title">气雾栽培智能体</div><div class="dd-desc">板块① 雾化种植基地</div></div></a>
         <a class="dd-item" href="sector.html?agent=%E5%B7%A5%E8%89%BA%E5%A4%A7%E5%B8%88%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">⚗️</div><div><div class="dd-title">工艺大师智能体</div><div class="dd-desc">板块② 加工处理</div></div></a>
@@ -61,46 +62,115 @@
   </div>
 </nav>
 
-<section class="wrap first" id="sector">
-  <div class="crumb"><a href="index.html">总览</a><span>·</span><a href="fleet.html">智能体舰队</a><span>·</span><span style="color:var(--text-dim)">板块运行视图</span></div>
-  <div class="eyebrow">业务板块 · Sector View</div>
-  <h2>每个板块，自己的一页</h2>
-  <p class="lead">产业链九个板块各有一个智能体。这一页把该板块的档案、能力、工单、事件与结算流水单独收拢，全部按该板块过滤。</p>
-  <div id="sectorBody"><div class="loading">板块档案加载中…</div></div>
-  <div id="secProfile"></div>
-  <div id="secActions" style="display:flex;gap:9px;flex-wrap:wrap;margin-top:15px"></div>
-  <div class="stats" id="secStats" style="margin-top:24px"></div>
-  <div id="secCaps" style="margin-top:32px"></div>
+<div class="ck-shell">
 
-  <h3 style="margin-top:36px">本板块工单</h3>
-  <div class="tw">
-    <table>
-      <thead><tr><th>任务标题</th><th>调用能力</th><th>优先级</th><th>状态</th><th>创建时间</th><th>工单号</th></tr></thead>
-      <tbody id="secTasks"><tr><td colspan="6"><div class="loading">工单加载中…</div></td></tr></tbody>
-    </table>
-  </div>
+  <aside class="ck-rail">
+    <div class="ck-rail-block">
+      <div class="ck-rail-h">系统状态 <span class="live"><i></i>LIVE</span></div>
+      <div class="ck-mini" id="ckRailKpi"><div class="loading">状态同步中…</div></div>
+      <div class="ck-stamp" id="ckStamp">数据时间 同步中…</div>
+    </div>
 
-  <h3 style="margin-top:36px">本板块事件流</h3>
-  <div class="tw">
-    <table>
-      <thead><tr><th>事件主题</th><th>方向</th><th>载荷摘要</th><th>状态</th><th>发生时间</th></tr></thead>
-      <tbody id="secEvents"><tr><td colspan="5"><div class="loading">事件加载中…</div></td></tr></tbody>
-    </table>
-  </div>
+    <div class="ck-rail-block">
+      <div class="ck-rail-h">本页分区</div>
+      <a class="ck-nav" href="#z1" data-ck-nav="z1"><span class="n">01</span>板块档案<span class="c" data-ck-count="agents">—</span></a>
+      <a class="ck-nav" href="#z2" data-ck-nav="z2"><span class="n">02</span>关键指标与调用能力<span class="c" data-ck-count="agents">—</span></a>
+      <a class="ck-nav" href="#z3" data-ck-nav="z3"><span class="n">03</span>本板块工单<span class="c">—</span></a>
+      <a class="ck-nav" href="#z4" data-ck-nav="z4"><span class="n">04</span>本板块事件流<span class="c">—</span></a>
+      <a class="ck-nav" href="#z5" data-ck-nav="z5"><span class="n">05</span>本板块结算流水<span class="c">—</span></a>
+    </div>
 
-  <h3 style="margin-top:36px">本板块结算流水</h3>
-  <div class="tw">
-    <table>
-      <thead><tr><th>付款方 → 收款方</th><th>服务名称</th><th>方向</th><th class="num">金额</th><th class="num">计量成本</th><th>计价角色</th><th class="num">计费JBP</th><th>结算时间</th></tr></thead>
-      <tbody id="secLedger"><tr><td colspan="8"><div class="loading">流水加载中…</div></td></tr></tbody>
-    </table>
-  </div>
-</section>
+    <div class="ck-rail-block">
+      <div class="ck-rail-h">动作</div>
+      <div class="ck-actions">
+        <a class="btn btn-primary ck-btn" href="boards.html">板块矩阵</a>
+        <a class="btn ck-btn" href="board.html">本板块工单</a>
+        <a class="btn ck-btn" href="economy.html">本板块流水</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="ck-main">
+
+    <div class="ck-head">
+      <div class="crumb"><a href="index.html">总览</a><span>·</span><a href="boards.html">业务板块</a><span>·</span><span style="color:var(--text-dim)">板块运行视图</span></div>
+      <h1 class="ck-h1">每个板块，自己的一页 <span>业务板块 · Sector View</span></h1>
+      <p class="ck-sub">该板块的档案、能力、工单、事件与结算流水，全部按该板块过滤。</p>
+      <div class="ck-strip" id="ckStrip">
+        <div class="c"><div class="ck-k">服务调用</div><div class="ck-v" data-m="a:服务调用" data-fmt="int">—</div><div class="ck-u">次累计调用</div></div>
+        <div class="c"><div class="ck-k">累计收益</div><div class="ck-v" data-m="a:累计收益" data-fmt="money">—</div><div class="ck-u">内部经济体结算</div></div>
+        <div class="c"><div class="ck-k">信用积分</div><div class="ck-v" data-m="a:信用积分" data-fmt="int">—</div><div class="ck-u">分</div></div>
+        <div class="c"><div class="ck-k">可调用能力</div><div class="ck-v" data-m="a:能力数" data-fmt="int">—</div><div class="ck-u">项服务</div></div>
+        <div class="c"><div class="ck-k">运行状态</div><div class="ck-v" data-m="a:运行状态" data-fmt="raw">—</div><div class="ck-u">实时心跳判定</div></div>
+        <div class="c"><div class="ck-k">最近心跳</div><div class="ck-v" data-m="a:最近心跳" data-fmt="ago">—</div><div class="ck-u">距上一次上报</div></div>
+      </div>
+    </div>
+
+    <div class="ck-grid">
+
+      <article class="ck-panel" id="z1" style="--span:12">
+        <div class="ck-ph"><span class="n">01</span><h2>板块档案</h2><span class="src" data-tbl="agents">智能体注册表</span><a class="go" href="fleet.html">舰队页 →</a></div>
+        <div class="ck-body" data-sp-bindable="database" data-sp-database-id="cFRjJqhyp5LDaCZHPp3XVm">
+          <div id="sectorBody"><div class="loading">板块档案加载中…</div></div>
+          <div id="secProfile"></div>
+          <div id="secActions" style="display:flex;gap:9px;flex-wrap:wrap;margin-top:15px"></div>
+        </div>
+      </article>
+
+      <article class="ck-panel" id="z2" style="--span:12">
+        <div class="ck-ph"><span class="n">02</span><h2>关键指标与调用能力</h2><span class="src" data-tbl="agents">智能体注册表</span><a class="go" href="fleet.html">舰队页 →</a></div>
+        <div class="ck-body" data-sp-bindable="database" data-sp-database-id="cFRjJqhyp5LDaCZHPp3XVm">
+          <div class="stats" id="secStats" style="margin-top:24px"></div>
+          <div id="secCaps" style="margin-top:32px"></div>
+        </div>
+      </article>
+
+      <article class="ck-panel" id="z3" style="--span:12">
+        <div class="ck-ph"><span class="n">03</span><h2>本板块工单</h2><span class="src" data-tbl="tasks">任务工单</span><a class="go" href="board.html">工单看板 →</a></div>
+        <div class="ck-body" data-sp-bindable="database" data-sp-database-id="xQspxv5gupTBY8LeSHVv5L">
+          <div class="tw">
+              <table>
+                <thead><tr><th>任务标题</th><th>调用能力</th><th>优先级</th><th>状态</th><th>创建时间</th><th>工单号</th></tr></thead>
+                <tbody id="secTasks"><tr><td colspan="6"><div class="loading">工单加载中…</div></td></tr></tbody>
+              </table>
+            </div>
+        </div>
+      </article>
+
+      <article class="ck-panel" id="z4" style="--span:12">
+        <div class="ck-ph"><span class="n">04</span><h2>本板块事件流</h2><span class="src" data-tbl="events">事件总线</span><a class="go" href="bus.html">事件总线 →</a></div>
+        <div class="ck-body" data-sp-bindable="database" data-sp-database-id="ND8kO27PEOFohwZHxm6WgV">
+          <div class="tw">
+              <table>
+                <thead><tr><th>事件主题</th><th>方向</th><th>载荷摘要</th><th>状态</th><th>发生时间</th></tr></thead>
+                <tbody id="secEvents"><tr><td colspan="5"><div class="loading">事件加载中…</div></td></tr></tbody>
+              </table>
+            </div>
+        </div>
+      </article>
+
+      <article class="ck-panel" id="z5" style="--span:12">
+        <div class="ck-ph"><span class="n">05</span><h2>本板块结算流水</h2><span class="src" data-tbl="ledger">智能体账本</span><a class="go" href="economy.html">全部流水 →</a></div>
+        <div class="ck-body" data-sp-bindable="database" data-sp-database-id="dmRghisDSmokozzg8GMuwv">
+          <div class="tw">
+              <table>
+                <thead><tr><th>付款方 → 收款方</th><th>服务名称</th><th>方向</th><th class="num">金额</th><th class="num">计量成本</th><th>计价角色</th><th class="num">计费JBP</th><th>结算时间</th></tr></thead>
+                <tbody id="secLedger"><tr><td colspan="8"><div class="loading">流水加载中…</div></td></tr></tbody>
+              </table>
+            </div>
+        </div>
+      </article>
+
+    </div>
+
+  </main>
+</div>
 
 <footer class="footer">
   <div class="wrap">
     <div class="fl">
       <a href="index.html">总览</a>
+      <a href="boards.html">经典网格</a>
       <a href="fleet.html">智能体舰队</a>
       <a href="dispatch.html">任务派发</a>
       <a href="bus.html">事件总线</a>
@@ -118,6 +188,7 @@
 
 <script src="assets/js/snapshot.js" defer></script>
 <script src="assets/js/shim.js" defer></script>
+<script src="assets/js/rail.js" defer></script>
 <script src="assets/js/os.js" defer></script>
 </body>
 </html>

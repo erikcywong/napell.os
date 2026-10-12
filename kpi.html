@@ -11,8 +11,9 @@
 <meta property="og:type" content="website">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/console.css">
 </head>
-<body data-page="kpi">
+<body class="ck" data-page="kpi">
 
 <nav class="nav">
   <a class="nav-logo" href="index.html" style="text-decoration:none"><span class="dot"></span>NAPELL <span style="color:var(--text-mute);font-weight:500">Coffee Chain OS</span></a>
@@ -41,7 +42,7 @@
       </div>
     </div>
     <div class="nav-item">
-      <a class="nav-link" href="fleet.html">业务板块 <span class="chev">▼</span></a>
+      <a class="nav-link" href="boards.html">业务板块 <span class="chev">▼</span></a>
       <div class="dropdown" style="min-width:306px">
         <a class="dd-item" href="sector.html?agent=%E6%B0%94%E9%9B%BE%E6%A0%BD%E5%9F%B9%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">🌱</div><div><div class="dd-title">气雾栽培智能体</div><div class="dd-desc">板块① 雾化种植基地</div></div></a>
         <a class="dd-item" href="sector.html?agent=%E5%B7%A5%E8%89%BA%E5%A4%A7%E5%B8%88%E6%99%BA%E8%83%BD%E4%BD%93"><div class="dd-icon">⚗️</div><div><div class="dd-title">工艺大师智能体</div><div class="dd-desc">板块② 加工处理</div></div></a>
@@ -61,46 +62,106 @@
   </div>
 </nav>
 
-<section class="wrap first" id="kpi">
-  <div class="crumb"><a href="index.html">总览</a><span>·</span><a href="economy.html">经济</a><span>·</span><span style="color:var(--text-dim)">运行 KPI</span></div>
-  <div class="eyebrow">运行 KPI · Live Aggregates</div>
-  <h2>全周期实测产出汇总</h2>
-  <p class="lead">以下数字由服务端聚合计算（count / sum / groupBy），不是前端算出来的。</p>
-  <div class="stats" id="kpiStats">
-    <div class="stat"><div class="skel" style="width:50%"></div><div class="skel" style="width:70%"></div></div>
-    <div class="stat"><div class="skel" style="width:50%"></div><div class="skel" style="width:70%"></div></div>
-    <div class="stat"><div class="skel" style="width:50%"></div><div class="skel" style="width:70%"></div></div>
-    <div class="stat"><div class="skel" style="width:50%"></div><div class="skel" style="width:70%"></div></div>
-  </div>
-  <div id="kpiErr"></div>
-  <div class="grid g2" style="margin-top:26px">
-    <div class="card">
-      <h3>🔄 全链飞轮（实测）</h3>
-      <p style="font-size:12.5px;color:var(--text-dim);margin-bottom:12px">数据 → 资产 → 金融 → 扩张。以下数值实时取自各数据表聚合结果。</p>
-      <div class="bars" id="fwBars"><div class="loading">飞轮计算中…</div></div>
+<div class="ck-shell">
+
+  <aside class="ck-rail">
+    <div class="ck-rail-block">
+      <div class="ck-rail-h">系统状态 <span class="live"><i></i>LIVE</span></div>
+      <div class="ck-mini" id="ckRailKpi"><div class="loading">状态同步中…</div></div>
+      <div class="ck-stamp" id="ckStamp">数据时间 同步中…</div>
     </div>
-    <div class="card">
-      <h3>💠 智能体净收支</h3>
-      <p style="font-size:12.5px;color:var(--text-dim);margin-bottom:12px">收入 − 支出，正值为对外净收入方。</p>
-      <div class="bars" id="ecoNet"><div class="loading">净额计算中…</div></div>
+
+    <div class="ck-rail-block">
+      <div class="ck-rail-h">本页分区</div>
+      <a class="ck-nav" href="#z1" data-ck-nav="z1"><span class="n">01</span>实测指标<span class="c" data-ck-count="cycles">—</span></a>
+      <a class="ck-nav" href="#z2" data-ck-nav="z2"><span class="n">02</span>全链飞轮与净收支<span class="c" data-ck-count="ledger">—</span></a>
+      <a class="ck-nav" href="#z3" data-ck-nav="z3"><span class="n">03</span>数据表台账<span class="c">—</span></a>
     </div>
-  </div>
-  <div class="card" style="margin-top:16px">
-    <h3>📊 数据表台账</h3>
-    <p style="font-size:12.5px;color:var(--text-dim);margin-bottom:12px">本系统共绑定 5 张资料库数据表，页面上的所有数字都来自这些表。</p>
-    <div class="tw">
-      <table>
-        <thead><tr><th>数据表</th><th>用途</th><th class="num">记录数</th><th>状态</th></tr></thead>
-        <tbody id="tblBody"><tr><td colspan="4"><div class="loading">台账加载中…</div></td></tr></tbody>
-      </table>
+
+    <div class="ck-rail-block">
+      <div class="ck-rail-h">动作</div>
+      <div class="ck-actions">
+        <a class="btn btn-primary ck-btn" href="economy.html">经济体</a>
+        <a class="btn ck-btn" href="cycles.html">24 小时时钟</a>
+        <a class="btn ck-btn" href="boards.html">经典网格</a>
+      </div>
     </div>
-  </div>
-</section>
+  </aside>
+
+  <main class="ck-main">
+
+    <div class="ck-head">
+      <div class="crumb"><a href="index.html">总览</a><span>·</span><a href="economy.html">经济</a><span>·</span><span style="color:var(--text-dim)">运行 KPI</span></div>
+      <h1 class="ck-h1">全周期实测产出汇总 <span>运行 KPI · Live Aggregates</span></h1>
+      <p class="ck-sub">以下数字全部由服务端聚合（count / sum / groupBy）算出，不是前端自算的。</p>
+      <div class="ck-strip" id="ckStrip">
+        <div class="c"><div class="ck-k">在册智能体</div><div class="ck-v" data-m="agents" data-fmt="int">—</div><div class="ck-u">覆盖九大板块</div></div>
+        <div class="c"><div class="ck-k">全链事件</div><div class="ck-v" data-m="events" data-fmt="int">—</div><div class="ck-u">条可追溯事件</div></div>
+        <div class="c"><div class="ck-k">任务工单</div><div class="ck-v" data-m="tasks" data-fmt="int">—</div><div class="ck-u">张（含人工）</div></div>
+        <div class="c"><div class="ck-k">运行周期</div><div class="ck-v" data-m="cycles" data-fmt="int">—</div><div class="ck-u">个时钟周期</div></div>
+        <div class="c"><div class="ck-k">结算流水</div><div class="ck-v" data-m="ledger" data-fmt="int">—</div><div class="ck-u">笔账本记录</div></div>
+        <div class="c"><div class="ck-k">计费合计</div><div class="ck-v" data-m="ledger_jbp" data-fmt="int">—</div><div class="ck-u">JBP · 1 JBP = 0.1 CNY</div></div>
+      </div>
+    </div>
+
+    <div class="ck-grid">
+
+      <article class="ck-panel" id="z1" style="--span:12">
+        <div class="ck-ph"><span class="n">01</span><h2>实测指标</h2><span class="src" data-tbl="cycles">运行周期</span><a class="go" href="cycles.html">时钟页 →</a></div>
+        <div class="ck-body" data-sp-bindable="database" data-sp-database-id="HZm1EBKdHUmqRMNIasCJfm">
+          <div class="stats" id="kpiStats">
+              <div class="stat"><div class="skel" style="width:50%"></div><div class="skel" style="width:70%"></div></div>
+              <div class="stat"><div class="skel" style="width:50%"></div><div class="skel" style="width:70%"></div></div>
+              <div class="stat"><div class="skel" style="width:50%"></div><div class="skel" style="width:70%"></div></div>
+              <div class="stat"><div class="skel" style="width:50%"></div><div class="skel" style="width:70%"></div></div>
+            </div>
+          <div id="kpiErr"></div>
+        </div>
+      </article>
+
+      <article class="ck-panel" id="z2" style="--span:12">
+        <div class="ck-ph"><span class="n">02</span><h2>全链飞轮与净收支</h2><span class="src" data-tbl="ledger">智能体账本</span><a class="go" href="economy.html">经济体 →</a></div>
+        <div class="ck-body" data-sp-bindable="database" data-sp-database-id="dmRghisDSmokozzg8GMuwv">
+          <div class="grid g2" style="margin-top:26px">
+              <div class="card">
+                <h3>🔄 全链飞轮（实测）</h3>
+                <p style="font-size:12.5px;color:var(--text-dim);margin-bottom:12px">数据 → 资产 → 金融 → 扩张。以下数值实时取自各数据表聚合结果。</p>
+                <div class="bars" id="fwBars"><div class="loading">飞轮计算中…</div></div>
+              </div>
+              <div class="card">
+                <h3>💠 智能体净收支</h3>
+                <p style="font-size:12.5px;color:var(--text-dim);margin-bottom:12px">收入 − 支出，正值为对外净收入方。</p>
+                <div class="bars" id="ecoNet"><div class="loading">净额计算中…</div></div>
+              </div>
+            </div>
+        </div>
+      </article>
+
+      <article class="ck-panel" id="z3" style="--span:12">
+        <div class="ck-ph"><span class="n">03</span><h2>数据表台账</h2><span class="src" data-tbl="all">五张数据表</span><a class="go" href="boards.html">全部 →</a></div>
+        <div class="ck-body">
+          <div class="ck-flat">
+              <p style="font-size:12.5px;color:var(--text-dim);margin-bottom:12px">本系统共绑定 5 张资料库数据表，页面上的所有数字都来自这些表。</p>
+              <div class="tw">
+                <table>
+                  <thead><tr><th>数据表</th><th>用途</th><th class="num">记录数</th><th>状态</th></tr></thead>
+                  <tbody id="tblBody"><tr><td colspan="4"><div class="loading">台账加载中…</div></td></tr></tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+      </article>
+
+    </div>
+
+  </main>
+</div>
 
 <footer class="footer">
   <div class="wrap">
     <div class="fl">
       <a href="index.html">总览</a>
+      <a href="boards.html">经典网格</a>
       <a href="fleet.html">智能体舰队</a>
       <a href="dispatch.html">任务派发</a>
       <a href="bus.html">事件总线</a>
@@ -118,6 +179,7 @@
 
 <script src="assets/js/snapshot.js" defer></script>
 <script src="assets/js/shim.js" defer></script>
+<script src="assets/js/rail.js" defer></script>
 <script src="assets/js/os.js" defer></script>
 </body>
 </html>
