@@ -135,3 +135,7 @@ Dark theme (`#000` background, `#1d9bf0` accent), dashboard-style data presentat
 `/western/` 是同一套 9 页 + 同一份数据的**换肤预览**：纸面底色、墨色文字、深松绿 + 古铜双色、细 hairline 分隔、等宽小标签、直角几何。导航右上角可在纸面版 / 深色版之间切换（选择存在 localStorage）。样式完全独立于默认皮肤（`western/assets/css/western.css`），确认采用后可直接替换根目录 `assets/css/style.css`。
 
 重建：`python tools/build_western.py --src . --out western --gh`（源脚本在工作区 `_build/build_western.py`）。
+
+## 版面实验 · 运行控制台（`cockpit.html`）
+
+同一个深色设计，总览页换成**控制台逻辑**而不是"读书"顺序：左侧常驻状态轨（系统状态 + 分区索引 + 动作）、页首仪表条、6 块带编号面板（01 板块矩阵 / 02 舰队 / 03 事件流 / 04 经济体 / 05 结算流水 / 06 24 小时周期）。每块面板只读一张表，头部标明来源表与条数，右上角进对应板块页。`assets/js/cockpit.js` 自带数据层（直接走 `__SMART_PAGE__.database`），不依赖 `os.js`。注意：根目录重建（`build_site.py`）会清空 `assets/`，重建后需重跑工作区的 `_build/build_cockpit.py`。
